@@ -1,0 +1,16 @@
+[
+  {
+    "url": "https://github.com/tannerlinsley/react-query",
+    "ms": 3000,
+    "page": 3
+  },
+  {
+    "url": "https://github.com/tannerlinsley/react-query",
+    "type": "stars",
+    "start": 0,
+    "end": 4
+  },
+  {
+    "forks": true
+  }
+]

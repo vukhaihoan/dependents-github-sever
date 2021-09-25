@@ -2,6 +2,7 @@ const app = require("express")();
 const mongoose = require("mongoose");
 require("dotenv").config();
 const httpServer = require("http").createServer(app);
+var port = process.env.PORT || 8000;
 const options = {
   cors: {
     origin: "*",
@@ -32,6 +33,6 @@ const onConnection = (socket) => {
 };
 io.on("connection", onConnection);
 
-httpServer.listen(3000, () => {
-  console.log("listening on *:3000");
+httpServer.listen(port, () => {
+  console.log(`listening on ${port}`);
 });

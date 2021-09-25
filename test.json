@@ -12,5 +12,8 @@
   },
   {
     "forks": true
+  },
+  {
+    "testdeploy": true
   }
 ]

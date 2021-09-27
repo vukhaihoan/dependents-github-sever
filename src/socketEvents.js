@@ -52,8 +52,8 @@ module.exports = (io, socket) => {
     await getProjectTime(url, ms);
   };
 
-  const onSort = ({ url, type, start, end }) => {
-    const sortData = sortDependents({ url, type, start, end });
+  const onSort = async ({ url, type, start, end }) => {
+    const sortData = await sortDependents({ url, type, start, end });
     io.emit("sort", sortData);
   };
 

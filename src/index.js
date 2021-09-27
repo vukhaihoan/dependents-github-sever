@@ -19,9 +19,8 @@ async function main() {
 }
 main().catch((err) => console.log(err));
 
-app.get("/", (req, res) => {
-  res.send("oke");
-});
+var api = require("./routers");
+app.use("/", api);
 
 const onConnection = (socket) => {
   console.log("connected");

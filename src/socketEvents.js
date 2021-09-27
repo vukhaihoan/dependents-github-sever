@@ -1,8 +1,4 @@
-const {
-  fetchMutipleData,
-  sortDependents,
-  getProjectTime,
-} = require("./crawl/main");
+const { fetchMutipleData, getProjectTime } = require("./crawl/main");
 const { validUrl } = require("./crawl/util");
 const { state } = require("./state/index");
 module.exports = (io, socket) => {
@@ -51,14 +47,7 @@ module.exports = (io, socket) => {
     }
     await getProjectTime(url, ms);
   };
-
-  const onSort = async ({ url, type, start, end }) => {
-    const sortData = await sortDependents({ url, type, start, end });
-    io.emit("sort", sortData);
-  };
-
   socket.on("fetch", onFetch);
   socket.on("server state", onSeverState);
   socket.on("amout", onAmout);
-  socket.on("sort", onSort);
 };

@@ -42,7 +42,9 @@ function getElement(res) {
         stars,
         forks,
       };
-      dependentsElements.push(a);
+      if (stars > 0 || forks > 0) {
+        dependentsElements.push(a);
+      }
     });
     return { dependentsElements, urlBeforeParam, urlAfterParam };
   } catch (error) {

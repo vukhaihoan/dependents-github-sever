@@ -53,7 +53,8 @@ module.exports = (io, socket) => {
   };
 
   const onSort = ({ url, type, start, end }) => {
-    sortDependents({ url, type, start, end });
+    const sortData = sortDependents({ url, type, start, end });
+    io.emit("sort", sortData);
   };
 
   socket.on("fetch", onFetch);

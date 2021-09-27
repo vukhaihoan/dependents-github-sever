@@ -133,8 +133,7 @@ async function sortDependents({ url, type, start, end }) {
   if (type == FORKS) {
     listDependents.sort(dynamicSort(FORKS));
   }
-  console.log(listDependents.slice(start, end));
-  return;
+  return listDependents.slice(start, end);
 }
 
 module.exports = { fetchMutipleData, getProjectTime, sortDependents };

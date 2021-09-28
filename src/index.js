@@ -1,4 +1,5 @@
 const express = require("express");
+var cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
 require("dotenv").config();
@@ -21,6 +22,7 @@ async function main() {
 main().catch((err) => console.log(err));
 
 var api = require("./routers");
+app.use(cors());
 app.use(express.json());
 app.use("/", api);
 

@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const { body, validationResult } = require("express-validator");
+const { body, query, validationResult } = require("express-validator");
 
 const {
   sortDependents,
@@ -21,16 +21,16 @@ router.get("/", function (req, res) {
 
 router.get(
   "/sort",
-  body("url").isURL(),
-  body("type").isString().trim(),
-  body("start").isInt({ min: 0 }),
-  body("end").isInt({ min: 0 }),
+  query("url").isURL(),
+  query("type").isString().trim(),
+  query("start").isInt({ min: 0 }).toInt(),
+  query("end").isInt({ min: 0 }).toInt(),
   async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { url, type, start, end } = req.body;
+    const { url, type, start, end } = req.query;
     if (end <= start) {
       return res.status(400).json({ errors: "illegal data slide" });
     }
@@ -41,14 +41,14 @@ router.get(
 
 router.get(
   "/amout",
-  body("url").isURL(),
-  body("ms").isInt({ min: 0 }),
+  query("url").isURL(),
+  query("ms").isInt({ min: 0 }),
   async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { url, ms } = req.body;
+    const { url, ms } = req.query;
     const projectTime = await getProjectTime(url, ms);
     res.send(projectTime);
   }

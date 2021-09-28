@@ -45,7 +45,7 @@ function secondsToTime(secs) {
 
 function convert(amout, ms) {
   if (ms == 0) {
-    ms == 1000;
+    ms = 1000;
   }
   const page = Math.ceil(amout / 30);
   const secs = (page * ms) / 1000;

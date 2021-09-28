@@ -1,4 +1,5 @@
-const app = require("express")();
+const express = require("express");
+const app = express();
 const mongoose = require("mongoose");
 require("dotenv").config();
 const httpServer = require("http").createServer(app);
@@ -20,6 +21,7 @@ async function main() {
 main().catch((err) => console.log(err));
 
 var api = require("./routers");
+app.use(express.json());
 app.use("/", api);
 
 const onConnection = (socket) => {

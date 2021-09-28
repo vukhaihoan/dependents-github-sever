@@ -20,6 +20,7 @@ const projectSchema = new Schema({
   url: String,
   listPage: [listPageScheme],
   listDependents: [listDependentsSchema],
+  lastpage: Boolean,
 });
 
 const projectModel = mongoose.model("project", projectSchema);

@@ -64,7 +64,7 @@ async function getProjectTime(url, ms) {
     .match(/\d+(?:\,\d+)*/g);
   const [amoutNumber] = amout.map((x) => Number(x.replace(/\,/g, "")));
   const projectTime = convert(amoutNumber, ms);
-  console.log(projectTime);
+  // console.log(projectTime);
   return projectTime;
 }
 

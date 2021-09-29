@@ -9,6 +9,12 @@ const {
 } = require("./crawl/main");
 const { state } = require("./state/index");
 
+function splitUrl(url) {
+  let arrUrl = url.split("/");
+  newUrl = "https://github.com/" + arrUrl[3] + "/" + arrUrl[4];
+  return newUrl;
+}
+
 // middleware that is specific to this router
 router.use(function timeLog(req, res, next) {
   console.log("Time: ", Date.now());
@@ -30,7 +36,8 @@ router.get(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { url, type, start, end } = req.query;
+    let { url, type, start, end } = req.query;
+    url = splitUrl(url);
     if (end <= start) {
       return res.status(400).json({ errors: "illegal data slide" });
     }
@@ -48,7 +55,8 @@ router.get(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { url, ms } = req.query;
+    let { url, ms } = req.query;
+    url = splitUrl(url);
     const projectTime = await getProjectTime(url, ms);
     res.send(projectTime);
   }
@@ -64,7 +72,8 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { url, ms, page, minutes } = req.body;
+    let { url, ms, page, minutes } = req.body;
+    url = splitUrl(url);
     if (state.isfetching == false) {
       state.onFetch();
       await fetchMutipleData(url, ms, page, minutes);
@@ -81,5 +90,13 @@ router.post(
     }
   }
 );
+
+router.get("/state", function (req, res) {
+  res.send({
+    state: {
+      isfetching: state.isfetching,
+    },
+  });
+});
 
 module.exports = router;

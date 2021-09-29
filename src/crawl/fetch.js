@@ -90,6 +90,7 @@ axiosRetry(axiosInstance, {
   retryDelay: (retryCount, error) => {
     if (error.response) {
       const retry_after = error.response.headers["retry-after"];
+      console.log(retry_after);
       if (retry_after) {
         return retry_after;
       }

@@ -76,12 +76,11 @@ router.post(
     url = splitUrl(url);
     if (state.isfetching == false) {
       state.onFetch();
+      res.send({
+        messgae: `sever is crawl with url : ${url}`,
+      });
       await fetchMutipleData(url, ms, page, minutes);
       state.onUnFetch();
-      res.send({
-        isfetching: false,
-        messgae: "fetch list dependents done",
-      });
     } else {
       res.status(503).json({
         isfetching: true,

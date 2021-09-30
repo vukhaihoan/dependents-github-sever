@@ -66,7 +66,7 @@ router.post(
   "/fetch",
   body("url").isURL(),
   body("ms").isInt({ min: 0 }),
-  body("page").isInt({ min: 0 }),
+  body("page").isInt({ min: -1 }),
   async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -76,6 +76,7 @@ router.post(
     url = splitUrl(url);
     if (state.isfetching == false) {
       state.onFetch();
+      state.onStart();
       res.send({
         messgae: `sever is crawl with url : ${url}`,
       });
@@ -96,6 +97,20 @@ router.get("/state", function (req, res) {
       isfetching: state.isfetching,
     },
   });
+});
+router.post("/stop", function (req, res) {
+  if (state.loop) {
+    state.onStop();
+    res.send({
+      messgae: "stop success",
+      loop: state.loop,
+    });
+  } else {
+    res.send({
+      message: "not have loop to stop",
+      loop: state.loop,
+    });
+  }
 });
 
 module.exports = router;

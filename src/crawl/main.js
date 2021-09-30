@@ -22,8 +22,16 @@ function getElement(res) {
     } else {
       urlBeforeParam = null;
     }
-    const urlafter = urlPage.last().attr("href");
-    const urlAfterParam = new URL(urlafter).search;
+    let urlafter;
+    let urlAfterParam;
+    const disabled = urlPage.last().attr("disabled");
+    if (disabled) {
+      state.onStop();
+      console.log("lastpage");
+    } else {
+      urlafter = urlPage.last().attr("href");
+      urlAfterParam = new URL(urlafter).search;
+    }
     els.map((el) => {
       const user = $('a[data-hovercard-type="user"]', el).text();
       const org = $('a[data-hovercard-type="organization"]', el).text();
@@ -82,21 +90,44 @@ async function fetchData(url, listPage, listDependents) {
     .then((res) => res.data)
     .catch((err) => {
       state.onUnFetch();
+      state.onStop();
       console.log(err);
+      return { fullurl, err: true };
     });
   const { dependentsElements, urlBeforeParam, urlAfterParam } = getElement(res);
   listPage.push({ page: listPage.length + 1, urlBeforeParam, urlAfterParam });
   listDependents.push(...dependentsElements);
   // console.log(listDependents);
-  return { fullurl };
+  return { fullurl, err: false };
 }
 
 async function loop(url, ms, listPage, listDependents, page) {
-  for (let i = 0; i < page; i++) {
-    let { fullurl } = await fetchData(url, listPage, listDependents);
-    console.log(`done with url : ${fullurl}`);
-    await delay(ms);
-    console.log(`${ms / 1000} s delay done `);
+  if (page == -1) {
+    while (state.loop) {
+      let { fullurl, err } = await fetchData(url, listPage, listDependents);
+      console.log(`done with url : ${fullurl}`);
+      if (err) {
+        console.log(`err with url : ${fullurl}`);
+      }
+      await delay(ms);
+      console.log(`${ms / 1000} s delay done `);
+    }
+    console.log("stop fetch");
+  } else {
+    for (let i = 0; i < page; i++) {
+      if (state.loop) {
+        let { fullurl, err } = await fetchData(url, listPage, listDependents);
+        console.log(`done with url : ${fullurl}`);
+        if (err) {
+          console.log(`err with url : ${fullurl}`);
+        }
+        await delay(ms);
+        console.log(`${ms / 1000} s delay done `);
+      } else {
+        console.log("stop fetch");
+        break;
+      }
+    }
   }
 }
 

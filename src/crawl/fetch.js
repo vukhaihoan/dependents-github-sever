@@ -91,7 +91,7 @@ axiosRetry(axiosInstance, {
     if (error.response) {
       const retry_after = error.response.headers["retry-after"];
       if (retry_after) {
-        return retry_after + 1000;
+        return Number(retry_after) + 1000;
       }
     }
     return axiosRetry.exponentialDelay(retryCount, error);

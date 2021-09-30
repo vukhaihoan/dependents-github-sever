@@ -117,7 +117,7 @@ async function loop(url, ms, listPage, listDependents, page) {
     for (let i = 0; i < page; i++) {
       if (state.loop) {
         let { fullurl, err } = await fetchData(url, listPage, listDependents);
-        console.log(`done with url : ${fullurl}`);
+        console.log(`done with url number ${i + 1} : ${fullurl}`);
         if (err) {
           console.log(`err with url : ${fullurl}`);
         }
